@@ -1,0 +1,29 @@
+version: 2.1
+jobs:
+  build-and-test:
+    docker:
+      - image: backstopjs/backstopjs
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
+      - run:
+          name: Install
+          command: npm install
+      - run:
+          name: Test
+          command: npm test
+      - store_artifacts:
+          path: backstop_data
+      - save_cache:
+          paths:
+            - node_modules
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
