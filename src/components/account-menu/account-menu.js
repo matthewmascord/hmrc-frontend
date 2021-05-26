@@ -40,11 +40,11 @@ AccountMenu.prototype.eventHandlers = {
     event.stopPropagation();
 
     if (isSmall(window)) {
-      if (!event.currentTarget.classList.contains('hmrc-account-menu__link--more-expanded')) {
+      if (event.currentTarget.getAttribute('aria-expanded') !== 'true') {
         this.hideMainNavMobile(event.currentTarget);
         this.showSubnavMobile(event.currentTarget);
       }
-    } else if (event.currentTarget.classList.contains('hmrc-account-menu__link--more-expanded')) {
+    } else if (event.currentTarget.getAttribute('aria-expanded') === 'true') {
       this.hideSubnavDesktop();
     } else {
       this.showSubnavDesktop();
@@ -117,7 +117,6 @@ AccountMenu.prototype.showSubnavDesktop = function showSubnavDesktop() {
   const subNavHeight = this.$subNav.offsetHeight;
   this.$module.style.marginBottom = `${subNavHeight}px`;
 
-  this.$showSubnavLink.classList.add('hmrc-account-menu__link--more-expanded');
   this.$showSubnavLink.setAttribute('aria-expanded', 'true');
 };
 
@@ -129,7 +128,6 @@ AccountMenu.prototype.hideSubnavDesktop = function hideSubnavDesktop() {
   this.$subNav.classList.remove('hmrc-subnav-reveal');
   this.$subNav.setAttribute('aria-hidden', 'true');
 
-  this.$showSubnavLink.classList.remove('hmrc-account-menu__link--more-expanded');
   this.$showSubnavLink.setAttribute('aria-expanded', 'false');
 
   this.$module.style.marginBottom = this.$moduleBottomMargin;
@@ -167,7 +165,6 @@ AccountMenu.prototype.showSubnavMobile = function showSubnavMobile(element) {
   this.$subNav.classList.add('hmrc-subnav-reveal');
   this.$subNav.setAttribute('aria-hidden', 'false');
 
-  this.$showSubnavLink.classList.add('hmrc-account-menu__link--more-expanded');
   this.$showSubnavLink.setAttribute('aria-expanded', 'true');
 
   this.$backLink.parentNode.setAttribute('aria-hidden', 'false');
@@ -195,7 +192,6 @@ AccountMenu.prototype.hideSubnavMobile = function hideSubnavMobile() {
   this.$subNav.classList.remove('hmrc-subnav-reveal');
   this.$subNav.setAttribute('aria-hidden', 'true');
 
-  this.$showSubnavLink.classList.remove('hmrc-account-menu__link--more-expanded');
   this.$showSubnavLink.setAttribute('aria-expanded', 'false');
 
   this.$backLink.parentNode.setAttribute('aria-hidden', 'true');
